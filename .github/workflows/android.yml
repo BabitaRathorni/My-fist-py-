@@ -1,32 +1,6 @@
-name: Build Android APK
-on: [push, pull_request, workflow_dispatch]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
       - name: Install Dependencies
         run: |
           sudo apt update
           sudo apt install -y python3-pip build-essential git python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
-          sudo apt install -y libgstreamer1.0-gstreamer-lite-dev libgstreamer-plugins-base1.0-dev
           pip install --upgrade pip
           pip install buildozer kivy
-
-      - name: Build APK with Buildozer
-        run: |
-          yes | buildozer -v android debug
-        continue-on-error: false
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Babita-Mission-APK
-          path: bin/*.apk

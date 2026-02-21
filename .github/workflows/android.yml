@@ -12,20 +12,26 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Dependencies
+      - name: Install All Potential Dependencies
         run: |
           sudo apt update
-          sudo apt install -y python3-pip build-essential git python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev
+          # Isme humne saari multimedia aur build libraries ek saath daal di hain
+          sudo apt install -y python3-pip build-essential git python3-dev ffmpeg libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2-ttf-dev libportmidi-dev libswscale-dev libavformat-dev libavcodec-dev zlib1g-dev libgstreamer1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good
           pip install --upgrade pip
-          pip install buildozer kivy cython
+          pip install buildozer kivy cython pillow requests
 
       - name: Build APK with Buildozer
         run: |
+          sudo chown -R runner:docker .
+          # 'yes |' saare licenses ko auto-accept kar lega
           yes | buildozer -v android debug
+        env:
+          USER: runner
         continue-on-error: false
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Babita-Mission-APK
+          # Iska naam humne dynamic rakha hai taaki har build ka naam alag ho
+          name: Babita-App-Build-${{ github.run_number }}
           path: bin/*.apk

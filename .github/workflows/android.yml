@@ -1,5 +1,8 @@
 name: Build Android APK
-on: [push, pull_request]
+on: 
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -16,5 +19,5 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Babita-App
+          name: Babita-Final-APK
           path: bin/*.apk

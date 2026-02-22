@@ -20,42 +20,10 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip \
-            autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake \
-            libffi-dev libssl-dev libsqlite3-dev libtinfo6 wget ccache
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip
           pip install buildozer cython virtualenv
 
-      - name: Clean build
-        run: rm -rf .buildozer ~/.buildozer
-
-      - name: Setup Android SDK
+      - name: Test buildozer config
         run: |
-          export SDK=/home/runner/android-sdk
-          mkdir -p $SDK/cmdline-tools
-          cd $SDK/cmdline-tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -q *.zip
-          mv cmdline-tools latest
-          rm *.zip
-          export PATH=$SDK/cmdline-tools/latest/bin:$SDK/platform-tools:$PATH
-          yes | sdkmanager --licenses || true
-          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" "ndk;25.2.9519653"
-          echo "ANDROID_SDK_ROOT=$SDK" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$SDK" >> $GITHUB_ENV
-          echo "PATH=$PATH" >> $GITHUB_ENV
-
-      - name: Build APK
-        run: buildozer android debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: babita-ultimate-apk
-          path: bin/*.apk
-
-      - name: Upload log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log
+          buildozer android clean
+          buildozer android update

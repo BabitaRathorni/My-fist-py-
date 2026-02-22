@@ -17,21 +17,46 @@ jobs:
         with:
           python-version: '3.9'
 
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Install system dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget ccache
+          sudo apt install -y git zip unzip python3-pip wget ccache autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev
 
-      - name: Install buildozer
+      - name: Install Python packages
         run: |
           pip install --upgrade pip
           pip install buildozer cython virtualenv
 
+      - name: Setup Android SDK with build-tools
+        uses: android-actions/setup-android@v3
+
+      - name: Install specific build-tools version
+        run: |
+          sdkmanager "platform-tools" "platforms;android-33"
+          sdkmanager "build-tools;33.0.0"
+          sdkmanager "ndk;25.2.9519653"
+
+      - name: Add build-tools to PATH
+        run: |
+          echo "$ANDROID_SDK_ROOT/build-tools/33.0.0" >> $GITHUB_PATH
+
+      - name: Verify aidl installation
+        run: |
+          which aidl || echo "aidl not found"
+          aidl --version || echo "aidl version check failed"
+
       - name: Build APK
-        run: buildozer -v android debug
+        run: |
+          buildozer -v android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: babita-ultimate-apk
-          path: bin/*.apk
+          path: bin/*.apk          path: bin/*.apk

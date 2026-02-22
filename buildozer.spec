@@ -38,7 +38,7 @@ orientation = portrait
 # Fullscreen
 fullscreen = 0
 
-# 🔥 Log level - ONLY ONE (hata diya duplicate)
+# Log level - ONLY ONE in app section
 log_level = 2
 
 # Architecture
@@ -60,63 +60,6 @@ window.size = 450x700
 android.recipes = sqlite3
 
 [buildozer]
-# 🔥 Only ONE log_level here
-log_level = 2
-warn_on_root = 1
-# Fullscreen
-fullscreen = 0
-
-# Log level
-log_level = 2
-
-# Architecture
-android.arch = arm64-v8a
-
-# Signing (debug only)
-android.debug = 1
-
-# 🔥 ADD THESE FOR SQLITE SUPPORT
-android.ndk_libraries = libc++_shared.so,libcrypto.so,libssl.so,libsqlite3.so
-
-# Wake lock
-wakelock = True
-
-# Window size
-window.size = 450x700
-
-# 🔥 RECIPES FOR ANDROID
-android.recipes = sqlite3
-
-[buildozer]
-log_level = 2
-warn_on_root = 1# Orientation
-orientation = portrait
-
-# Fullscreen
-fullscreen = 0
-
-# Log level
-log_level = 2
-
-# Architecture
-android.arch = arm64-v8a
-
-# Signing (debug only)
-android.debug = 1
-
-# 🔥 ADD THESE FOR SQLITE SUPPORT
-android.ndk_libraries = libc++_shared.so,libcrypto.so,libssl.so,libsqlite3.so
-android.add_src += /usr/lib/aarch64-linux-android/libsqlite3.so
-
-# Wake lock
-wakelock = True
-
-# Window size
-window.size = 450x700
-
-# 🔥 RECIPES FOR ANDROID
-android.recipes = openssl, sqlite3
-
-[buildozer]
+# 🔥 SIRF EK LOG_LEVEL YAHAN - DUPLICATE HATA DIYA
 log_level = 2
 warn_on_root = 1

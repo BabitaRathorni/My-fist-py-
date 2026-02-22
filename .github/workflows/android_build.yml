@@ -41,6 +41,14 @@ jobs:
           path: .buildozer
           key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
       
+      - name: 🔥 Accept Android SDK licenses
+        run: |
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          yes | sdkmanager --licenses
+          yes | sdkmanager "platform-tools" "platforms;android-33"
+          yes | sdkmanager "build-tools;33.0.0"
+      
       - name: Build with buildozer
         run: |
           buildozer android debug

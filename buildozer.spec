@@ -4,11 +4,11 @@ package.name = babitaultimate
 package.domain = org.babita
 
 source.dir = .
-source.include_exts = py,png,jpg,kv,ttf
+source.include_exts = py,png,jpg,kv,ttf,txt
 
 version = 0.1
 
-requirements = python3,kivy
+requirements = python3,kivy,requests
 
 android.api = 33
 android.minapi = 21
@@ -19,5 +19,9 @@ android.permissions = INTERNET
 
 orientation = portrait
 
+android.archs = arm64-v8a
+
+android.debug = 1
+
 [buildozer]
-log_level = 2log_level = 2
+log_level = 2

@@ -10,8 +10,7 @@ version = 0.1
 # version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
 
-# 🔥 FIXED REQUIREMENTS - REMOVED CONFLICTING PACKAGES
-requirements = python3,kivy==2.3.0,plyer,cryptography,requests,beautifulsoup4,pyjnius,android
+requirements = python3,kivy,plyer,cryptography,requests,beautifulsoup4,pyjnius,android
 
 # Android specific
 android.api = 33
@@ -23,9 +22,8 @@ android.gradle_dependencies = 'com.google.android.gms:play-services-location:21.
 # Permissions
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,VIBRATE
 
-# Extra Java source
-android.add_src =
-android.add_src += java/
+# 🔥 FIXED: Only ONE android.add_src line
+android.add_src = java/
 
 # Metadata
 android.meta_data = com.google.android.gms.version=@integer/google_play_services_version
@@ -35,6 +33,35 @@ icon.filename = %(source.dir)s/assets/icon.png
 presplash.filename = %(source.dir)s/assets/splash.png
 
 # Orientation
+orientation = portrait
+
+# Fullscreen
+fullscreen = 0
+
+# Log level
+log_level = 2
+
+# Architecture
+android.arch = arm64-v8a
+
+# Signing (debug only)
+android.debug = 1
+
+# 🔥 ADD THESE FOR SQLITE SUPPORT
+android.ndk_libraries = libc++_shared.so,libcrypto.so,libssl.so,libsqlite3.so
+
+# Wake lock
+wakelock = True
+
+# Window size
+window.size = 450x700
+
+# 🔥 RECIPES FOR ANDROID
+android.recipes = sqlite3
+
+[buildozer]
+log_level = 2
+warn_on_root = 1# Orientation
 orientation = portrait
 
 # Fullscreen

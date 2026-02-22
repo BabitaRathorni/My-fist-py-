@@ -11,7 +11,10 @@ version = 0.1
 # version.filename = %(source.dir)s/main.py
 
 requirements = python3,kivy,plyer,cryptography,requests,beautifulsoup4,pyjnius,android
-
+# buildozer.spec mein ye lines add karo
+android.accept_sdk_license = True
+android.sdk_manager_accept_licenses = True
+android.build_tools_version = 33.0.0
 # Android specific
 android.api = 33
 android.minapi = 21

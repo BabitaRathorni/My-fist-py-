@@ -9,7 +9,9 @@ source.include_exts = py,png,jpg,kv,ttf,txt,db
 version = 0.1
 
 requirements = python3,kivy,plyer,requests,pyjnius
-
+# Force specific build-tools version
+android.build_tools_version = 33.0.0
+android.accept_sdk_license = True
 # Android specific
 android.api = 33
 android.minapi = 21

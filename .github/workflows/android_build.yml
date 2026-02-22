@@ -8,300 +8,54 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-      
-      - name: Install system dependencies
+
+      - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y \
-            git zip unzip \
-            openjdk-17-jdk \
-            python3-pip \
-            autoconf libtool pkg-config \
-            zlib1g-dev \
-            libncurses-dev \
-            cmake \
-            libffi-dev \
-            libssl-dev \
-            libsqlite3-dev \
-            libtinfo6 \
-            wget \
-            ccache
-          pip install --upgrade pip setuptools wheel
-          pip install buildozer cython==0.29.36 virtualenv
-      
-      - name: Clean old build
-        run: |
-          rm -rf .buildozer
-          rm -rf ~/.buildozer
-      
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip \
+            autoconf libtool pkg-config zlib1g-dev libncurses-dev cmake \
+            libffi-dev libssl-dev libsqlite3-dev libtinfo6 wget ccache
+          pip install buildozer cython virtualenv
+
+      - name: Clean build
+        run: rm -rf .buildozer ~/.buildozer
+
       - name: Setup Android SDK
         run: |
-          export ANDROID_SDK_ROOT=/home/runner/android-sdk
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
-          
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          cd $ANDROID_SDK_ROOT/cmdline-tools
+          export SDK=/home/runner/android-sdk
+          mkdir -p $SDK/cmdline-tools
+          cd $SDK/cmdline-tools
           wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -q commandlinetools-linux-9477386_latest.zip
+          unzip -q *.zip
           mv cmdline-tools latest
-          rm commandlinetools-linux-9477386_latest.zip
-          
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
+          rm *.zip
+          export PATH=$SDK/cmdline-tools/latest/bin:$SDK/platform-tools:$PATH
           yes | sdkmanager --licenses || true
-          yes | sdkmanager "platform-tools" "platforms;android-33"
-          yes | sdkmanager "build-tools;33.0.0"
-          yes | sdkmanager "ndk;25.2.9519653"
-          
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0" "ndk;25.2.9519653"
+          echo "ANDROID_SDK_ROOT=$SDK" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$SDK" >> $GITHUB_ENV
           echo "PATH=$PATH" >> $GITHUB_ENV
-      
-      - name: Build with buildozer
-        run: |
-          buildozer android debug 2>&1 | tee build.log
-      
+
+      - name: Build APK
+        run: buildozer android debug
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: babita-ultimate-apk
           path: bin/*.apk
-          if-no-files-found: error
-          retention-days: 30
-      
-      - name: Upload build log
+
+      - name: Upload log
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: build-log
           path: build.log
-          retention-days: 7          pip install --upgrade pip setuptools wheel
-          pip install buildozer cython==0.29.36 virtualenv
-      
-      - name: Clean old build
-        run: |
-          rm -rf .buildozer
-          rm -rf ~/.buildozer
-      
-      - name: Setup Android SDK
-        run: |
-          export ANDROID_SDK_ROOT=/home/runner/android-sdk
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
-          
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          cd $ANDROID_SDK_ROOT/cmdline-tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -q commandlinetools-linux-9477386_latest.zip
-          mv cmdline-tools latest
-          rm commandlinetools-linux-9477386_latest.zip
-          
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          yes | sdkmanager --licenses || true
-          yes | sdkmanager "platform-tools" "platforms;android-33"
-          yes | sdkmanager "build-tools;33.0.0"
-          yes | sdkmanager "ndk;25.2.9519653"
-          
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "PATH=$PATH" >> $GITHUB_ENV
-      
-      - name: Build with buildozer
-        run: |
-          buildozer android debug 2>&1 | tee build.log
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: babita-ultimate-apk
-          path: bin/*.apk
-          if-no-files-found: error
-          retention-days: 30
-      
-      - name: Upload build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log
-          retention-days: 7          pip install --upgrade pip setuptools wheel
-          pip install buildozer cython==0.29.36 virtualenv
-      
-      - name: Clean old build
-        run: |
-          rm -rf .buildozer
-          rm -rf ~/.buildozer
-      
-      - name: Setup Android SDK
-        run: |
-          export ANDROID_SDK_ROOT=/home/runner/android-sdk
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
-          
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          cd $ANDROID_SDK_ROOT/cmdline-tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -q commandlinetools-linux-9477386_latest.zip
-          mv cmdline-tools latest
-          rm commandlinetools-linux-9477386_latest.zip
-          
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          yes | sdkmanager --licenses || true
-          yes | sdkmanager "platform-tools" "platforms;android-33"
-          yes | sdkmanager "build-tools;33.0.0"
-          yes | sdkmanager "ndk;25.2.9519653"
-          
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "PATH=$PATH" >> $GITHUB_ENV
-      
-      - name: Build with buildozer
-        run: |
-          buildozer android debug 2>&1 | tee build.log
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: babita-ultimate-apk
-          path: bin/*.apk
-          if-no-files-found: error
-          retention-days: 30
-      
-      - name: Upload build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log
-          retention-days: 7          pip install --upgrade pip setuptools wheel
-          pip install buildozer cython==0.29.36 virtualenv
-      
-      - name: Clean old build
-        run: |
-          rm -rf .buildozer
-          rm -rf ~/.buildozer
-      
-      - name: 🔥 Setup Android SDK
-        run: |
-          export ANDROID_SDK_ROOT=/home/runner/android-sdk
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
-          
-          # Download command line tools
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          cd $ANDROID_SDK_ROOT/cmdline-tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -q commandlinetools-linux-9477386_latest.zip
-          mv cmdline-tools latest
-          rm commandlinetools-linux-9477386_latest.zip
-          
-          # Add to PATH
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          
-          # Accept licenses
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          yes | sdkmanager --licenses || true
-          yes | sdkmanager "platform-tools" "platforms;android-33"
-          yes | sdkmanager "build-tools;33.0.0"
-          yes | sdkmanager "ndk;25.2.9519653"
-          
-          # Save environment
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "PATH=$PATH" >> $GITHUB_ENV
-      
-      - name: 🔥 Build with buildozer (verbose)
-        run: |
-          buildozer android debug 2>&1 | tee build.log
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: babita-ultimate-apk
-          path: bin/*.apk
-          if-no-files-found: error
-          retention-days: 30
-      
-      - name: Upload build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log          pip install --upgrade pip setuptools wheel
-          pip install buildozer cython==0.29.36 virtualenv
-      
-      - name: Clean old build
-        run: |
-          rm -rf .buildozer
-          rm -rf ~/.buildozer
-      
-      - name: 🔥 Setup Android SDK with ABSOLUTE paths
-        run: |
-          # Set absolute path
-          export ANDROID_SDK_ROOT=/home/runner/android-sdk
-          export ANDROID_HOME=/home/runner/android-sdk
-          
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          cd $ANDROID_SDK_ROOT/cmdline-tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -q commandlinetools-linux-9477386_latest.zip
-          mv cmdline-tools latest
-          
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          
-          # Accept licenses
-          mkdir -p ~/.android
-          touch ~/.android/repositories.cfg
-          yes | sdkmanager --licenses || true
-          yes | sdkmanager "platform-tools" "platforms;android-33"
-          yes | sdkmanager "build-tools;33.0.0"
-          yes | sdkmanager "ndk;25.2.9519653"
-          
-          # Save for later steps
-          echo "ANDROID_SDK_ROOT=/home/runner/android-sdk" >> $GITHUB_ENV
-          echo "ANDROID_HOME=/home/runner/android-sdk" >> $GITHUB_ENV
-          echo "PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH" >> $GITHUB_ENV
-          
-          # Create symlinks for buildozer
-          ln -sf $ANDROID_SDK_ROOT /home/runner/android-sdk
-      
-      - name: First buildozer run
-        run: |
-          buildozer android clean || true
-          buildozer android update || true
-      
-      - name: Force python-for-android clone
-        run: |
-          mkdir -p .buildozer/android/platform
-          cd .buildozer/android/platform
-          if [ ! -d "python-for-android" ]; then
-            git clone https://github.com/kivy/python-for-android.git
-          fi
-          cd python-for-android
-          pip install -e .
-      
-      - name: Build with buildozer
-        run: |
-          buildozer android debug
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: babita-ultimate-apk
-          path: bin/*.apk
-          if-no-files-found: error
-          retention-days: 30

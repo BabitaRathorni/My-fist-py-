@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="{{ args.package_name }}"
+    android:versionCode="{{ args.version_code }}"
+    android:versionName="{{ args.version_name }}"
+    android:installLocation="auto">
+
+    <uses-sdk android:minSdkVersion="{{ args.min_sdk_version }}" 
+              android:targetSdkVersion="{{ args.target_sdk_version }}"/>
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    
+    <!-- For Android 11+ -->
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+    
+    <!-- Features -->
+    <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="false"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="{{ args.app_name }}"
+        android:theme="@android:style/Theme.Black.NoTitleBar"
+        android:hardwareAccelerated="true"
+        android:resizeableActivity="false"
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true">
+
+        <!-- Main Activity -->
+        <activity
+            android:name="org.kivy.android.PythonActivity"
+            android:label="{{ args.app_name }}"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize"
+            android:screenOrientation="portrait"
+            android:exported="true">
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+        </activity>
+
+        <!-- Service for background processing -->
+        <service
+            android:name="org.kivy.android.PythonService"
+            android:exported="false" />
+
+        <!-- Provider for file access -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="{{ args.package_name }}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- Metadata for Google Play Services -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+            
+    </application>
+
+</manifest>

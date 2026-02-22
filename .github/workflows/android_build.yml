@@ -28,12 +28,26 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython==0.29.33 virtualenv
 
-      - name: Force Accept Android Licenses
+      - name: Pre-accept SDK Licenses
         run: |
           mkdir -p ~/.android
           touch ~/.android/repositories.cfg
-          # Ye line saare licenses ko automatically 'yes' bol degi
-          yes | buildozer android p d  # Pehle download and accept licenses
+          # Ye command SDK manager ko bolti hai ki saare licenses accept kar lo
+          yes | buildozer android debug --f --p
+        continue-on-error: true
+
+      - name: Build with Buildozer
+        run: |
+          # Is baar seedha build chalayenge
+          buildozer -v android debug
+        env:
+          ACCEPT_SDK_LICENSE: "yes"
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Babita-Ultimate-APK
+          path: bin/*.apk
         continue-on-error: true
 
       - name: Build with Buildozer

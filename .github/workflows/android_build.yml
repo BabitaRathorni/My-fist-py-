@@ -20,7 +20,6 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt update
-          # 🔥 FIXED: ccake -> ccache
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget ccache
 
       - name: Install buildozer
@@ -30,29 +29,6 @@ jobs:
 
       - name: Build APK
         run: buildozer -v android debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: babita-ultimate-apk
-          path: bin/*.apk          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-          unzip -q *.zip
-          mv cmdline-tools latest
-          rm *.zip
-
-          yes | sdkmanager --licenses || true
-          sdkmanager "platform-tools" "platforms;android-33"
-          sdkmanager "build-tools;33.0.0"
-          sdkmanager "ndk;25.2.9519653"
-
-          # 🔥 Force aidl to be found
-          echo "$ANDROID_HOME/build-tools/33.0.0" >> $GITHUB_PATH
-
-          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
-
-      - name: Build APK
-        run: |
-          buildozer -v android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

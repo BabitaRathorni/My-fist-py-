@@ -9,20 +9,16 @@ source.include_exts = py,png,jpg,kv,ttf,txt,db
 version = 0.1
 # version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
-# 🔥 Add these lines near top
-android.ndk = 25b
-android.ndk_path = $(ANDROID_HOME)/ndk/25.2.9519653
-android.sdk_path = $(ANDROID_SDK_ROOT)
+
 requirements = python3,kivy,plyer,cryptography,requests,beautifulsoup4,pyjnius,android
-# buildozer.spec mein ye lines add karo
-android.accept_sdk_license = True
-android.sdk_manager_accept_licenses = True
-android.build_tools_version = 33.0.0
-# Android specific
+
+# 🔥 ANDROID SPECIFIC - NO DUPLICATES
 android.api = 33
 android.minapi = 21
 android.ndk = 25b
 android.sdk = 33
+android.ndk_path = $(ANDROID_HOME)/ndk/25.2.9519653
+android.sdk_path = $(ANDROID_SDK_ROOT)
 android.gradle_dependencies = 'com.google.android.gms:play-services-location:21.0.1'
 
 # Permissions
@@ -35,6 +31,39 @@ android.add_src = java/
 android.meta_data = com.google.android.gms.version=@integer/google_play_services_version
 
 # App icon
+icon.filename = %(source.dir)s/assets/icon.png
+presplash.filename = %(source.dir)s/assets/splash.png
+
+# Orientation
+orientation = portrait
+
+# Fullscreen
+fullscreen = 0
+
+# Log level
+log_level = 2
+
+# Architecture
+android.arch = arm64-v8a
+
+# Signing (debug only)
+android.debug = 1
+
+# SQLite support
+android.ndk_libraries = libc++_shared.so,libcrypto.so,libssl.so,libsqlite3.so
+
+# Wake lock
+wakelock = True
+
+# Window size
+window.size = 450x700
+
+# Recipes for Android
+android.recipes = sqlite3
+
+[buildozer]
+log_level = 2
+warn_on_root = 1# App icon
 icon.filename = %(source.dir)s/assets/icon.png
 presplash.filename = %(source.dir)s/assets/splash.png
 

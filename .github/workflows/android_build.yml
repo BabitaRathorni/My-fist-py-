@@ -28,13 +28,16 @@ jobs:
           python -m pip install buildozer cython virtualenv
 
       - name: Setup Android SDK
-        run: |
-          python -m buildozer android update
+        run: python -m buildozer android update
 
       - name: Build APK
-        run: |
-          python -m buildozer -v android debug
+        run: python -m buildozer -v android debug
 
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: babita-ultimate-apk
+          path: bin/*.apk
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:

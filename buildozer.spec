@@ -1,39 +1,58 @@
-name: Build Android APK
+[app]
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+# (str) Title of your application
+title = Babita AI
 
-jobs:
-  build:
-    runs-on: ubuntu-22.04
+# (str) Package name
+package.name = babita_ultimate
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+# (str) Package domain (needed for android packaging)
+package.domain = org.test
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+# (str) Source code where the main.py is located
+source.dir = .
 
-      - name: Install System Dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget ccache libncurses5 libstdc++6 python3-setuptools
+# (list) Source files to include (let empty to include all the files)
+source.include_exts = py,png,jpg,kv,db,ttf
 
-      - name: Install Buildozer and Cython
-        run: |
-          pip install --upgrade pip
-          pip install buildozer cython==0.29.33 virtualenv
+# (str) Application versioning
+version = 0.1
 
-      - name: Build with Buildozer
-        run: |
-          # Pehle licenses accept karenge aur phir seedha build
-          yes | buildozer -v android debug
-        env:
-          ACCEPT_SDK_LICENSE: "yes"
+# (list) Application requirements
+# Yahan sari libraries hain jo tune code mein use ki hain
+requirements = python3,kivy==2.3.0,plyer,cryptography,requests,beautifulsoup4,sqlite3
+
+# (str) Supported orientation
+orientation = portrait
+
+# (bool) Indicate if the application should be fullscreen
+fullscreen = 0
+
+# (list) Permissions
+android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION
+
+# (int) Target Android API
+android.api = 33
+
+# (int) Minimum API your APK will support
+android.minapi = 21
+
+# (str) Android SDK directory (if empty, it will be automatically downloaded)
+android.sdk_build_tools_revision = 33.0.0
+
+# (str) Android NDK version
+android.ndk = 25b
+
+# (bool) Accept SDK license without operator interaction
+android.accept_sdk_license = True
+
+[buildozer]
+
+# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
+log_level = 2
+
+# (int) Display warning if buildozer is run as root (0 = false, 1 = true)
+warn_on_root = 1
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

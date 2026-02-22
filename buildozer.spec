@@ -22,6 +22,7 @@ android.gradle_dependencies = 'com.google.android.gms:play-services-location:21.
 # Permissions
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,VIBRATE
 
+# Extra Java source - SIRF EK BAAR
 android.add_src =
 android.add_src += java/
 
@@ -44,24 +45,11 @@ log_level = 2
 # Architecture
 android.arch = arm64-v8a
 
-# Java source
-android.add_src = java/
-
 # Signing (debug only)
 android.debug = 1
 
 # Build options
 android.accept_sdk_license = True
-android.ndk_path = /path/to/ndk  # Auto-detected usually
-
-# Libraries
-android.library_references = 
-
-# Extra Java classes
-android.add_src = 
-
-# Services
-android.services = 
 
 # Wake lock
 wakelock = True

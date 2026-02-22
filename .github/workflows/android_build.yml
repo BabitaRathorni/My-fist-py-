@@ -84,4 +84,29 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: babita-ultimate-apk
+          path: bin/*.apk        uses: android-actions/setup-android@v3
+
+      - name: Install specific build-tools version
+        run: |
+          sdkmanager "platform-tools" "platforms;android-33"
+          sdkmanager "build-tools;33.0.0"
+          sdkmanager "ndk;25.2.9519653"
+
+      - name: Add build-tools to PATH
+        run: |
+          echo "$ANDROID_SDK_ROOT/build-tools/33.0.0" >> $GITHUB_PATH
+
+      - name: Verify aidl installation
+        run: |
+          which aidl || echo "aidl not found"
+          aidl --version || echo "aidl version check failed"
+
+      - name: Build APK
+        run: |
+          buildozer -v android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: babita-ultimate-apk
           path: bin/*.apk          path: bin/*.apk

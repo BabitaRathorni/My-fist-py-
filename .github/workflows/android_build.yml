@@ -7,7 +7,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # 🔥 Version ko 'latest' se hata kar '22.04' par lock kar diya hai
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout Code
@@ -30,6 +31,7 @@ jobs:
 
       - name: Build with Buildozer
         run: |
+          # Buildozer handles the rest
           buildozer -v android debug
         env:
           ACCEPT_SDK_LICENSE: "yes"

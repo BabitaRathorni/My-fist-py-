@@ -8,9 +8,8 @@ source.include_exts = py,png,jpg,kv,ttf,txt
 
 version = 0.1
 
-requirements = python3,kivy,requests
+requirements = python3,kivy
 
-# Android specific - NO android.sdk line
 android.api = 33
 android.minapi = 21
 android.ndk = 25b

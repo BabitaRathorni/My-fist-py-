@@ -10,7 +10,8 @@ version = 0.1
 # version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
 
-requirements = python3,kivy,plyer,cryptography,requests,beautifulsoup4,openssl,sqlite3
+# 🔥 FIXED REQUIREMENTS - REMOVED CONFLICTING PACKAGES
+requirements = python3,kivy==2.3.0,plyer,cryptography,requests,beautifulsoup4,pyjnius,android
 
 # Android specific
 android.api = 33
@@ -48,14 +49,18 @@ android.arch = arm64-v8a
 # Signing (debug only)
 android.debug = 1
 
-# Build options
-android.accept_sdk_license = True
+# 🔥 ADD THESE FOR SQLITE SUPPORT
+android.ndk_libraries = libc++_shared.so,libcrypto.so,libssl.so,libsqlite3.so
+android.add_src += /usr/lib/aarch64-linux-android/libsqlite3.so
 
 # Wake lock
 wakelock = True
 
 # Window size
 window.size = 450x700
+
+# 🔥 RECIPES FOR ANDROID
+android.recipes = openssl, sqlite3
 
 [buildozer]
 log_level = 2

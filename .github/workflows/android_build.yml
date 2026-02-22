@@ -18,29 +18,28 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install Critical Dependencies
+      - name: Install System Dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget ccache \
-          libncurses5 libstdc++6 python3-setuptools
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget ccache libncurses5 libstdc++6
 
       - name: Install Buildozer and Cython
         run: |
           pip install --upgrade pip
           pip install buildozer cython==0.29.33 virtualenv
 
+      - name: Force Accept Android Licenses
+        run: |
+          mkdir -p ~/.android
+          touch ~/.android/repositories.cfg
+          # Ye line saare licenses ko automatically 'yes' bol degi
+          yes | buildozer android p d  # Pehle download and accept licenses
+        continue-on-error: true
+
       - name: Build with Buildozer
         run: |
-          # Sabse safe tarika: dependencies check skip karke seedha build
           buildozer -v android debug
         env:
-          ACCEPT_SDK_LICENSE: "yes"
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        with:
-          name: Babita-Ultimate-APK
-          path: bin/*.apk
           ACCEPT_SDK_LICENSE: "yes"
 
       - name: Upload APK

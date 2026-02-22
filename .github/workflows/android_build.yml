@@ -33,8 +33,39 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython virtualenv
 
-      - name: Setup Android SDK with build-tools
-        uses: android-actions/setup-android@v3
+      - name: 🔥 Fix Aidl - Setup Android SDK properly
+        run: |
+          export ANDROID_HOME=$HOME/android-sdk
+          export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools
+          
+          mkdir -p $ANDROID_HOME/cmdline-tools
+          cd $ANDROID_HOME/cmdline-tools
+          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+          unzip -q commandlinetools-linux-11076708_latest.zip
+          mv cmdline-tools latest
+          rm *.zip
+          
+          yes | sdkmanager --licenses
+          sdkmanager "platform-tools" "platforms;android-33"
+          sdkmanager "build-tools;33.0.0"
+          sdkmanager "ndk;25.2.9519653"
+          
+          # 🔥 Force aidl path
+          echo "$ANDROID_HOME/build-tools/33.0.0" >> $GITHUB_PATH
+          echo "ANDROID_HOME=$ANDROID_HOME" >> $GITHUB_ENV
+          
+          # Verify aidl
+          which aidl || echo "AIDL STILL MISSING!"
+          aidl --version || echo "Version check failed"
+
+      - name: Build APK
+        run: buildozer -v android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: babita-ultimate-apk
+          path: bin/*.apk        uses: android-actions/setup-android@v3
 
       - name: Install specific build-tools version
         run: |

@@ -22,19 +22,24 @@ jobs:
           sudo apt update
           sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget ccache
 
-      - name: Install buildozer
+      - name: Install Python packages
         run: |
-          pip install --upgrade pip
-          pip install buildozer cython virtualenv
+          python -m pip install --upgrade pip
+          python -m pip install buildozer cython virtualenv
 
       - name: Setup Android SDK
         run: |
-          buildozer android update
+          python -m buildozer android update
 
       - name: Build APK
         run: |
-          buildozer -v android debug
+          python -m buildozer -v android debug
 
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: babita-ultimate-apk
+          path: bin/*.apk
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:

@@ -10,7 +10,7 @@ version = 0.1
 
 requirements = python3,kivy,requests
 
-# 🔥 FIXED: Remove deprecated android.sdk
+# Android specific - NO android.sdk line
 android.api = 33
 android.minapi = 21
 android.ndk = 25b

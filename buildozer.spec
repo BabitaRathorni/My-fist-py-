@@ -7,8 +7,8 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,ttf,txt,db
 
 version = 0.1
-version.regex = __version__ = ['"](.*)['"]
-version.filename = %(source.dir)s/main.py
+# version.regex = __version__ = ['"](.*)['"]
+# version.filename = %(source.dir)s/main.py
 
 requirements = python3,kivy,plyer,cryptography,requests,beautifulsoup4,openssl,sqlite3
 
@@ -22,7 +22,7 @@ android.gradle_dependencies = 'com.google.android.gms:play-services-location:21.
 # Permissions
 android.permissions = INTERNET,ACCESS_NETWORK_STATE,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,VIBRATE
 
-# Extra Java source - SIRF EK BAAR
+# Extra Java source
 android.add_src =
 android.add_src += java/
 

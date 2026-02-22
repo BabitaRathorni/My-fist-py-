@@ -1,0 +1,9 @@
+kivy>=2.1.0
+plyer>=2.1
+cryptography>=3.4.8
+requests>=2.26.0
+beautifulsoup4>=4.10.0
+pyjnius>=1.5.0  # For Android sensors
+android==1.0  # For Android permissions
+pillow>=9.0.0  # For image processing
+numpy>=1.21.0  # For future ML features

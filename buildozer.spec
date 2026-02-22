@@ -9,7 +9,10 @@ source.include_exts = py,png,jpg,kv,ttf,txt,db
 version = 0.1
 # version.regex = __version__ = ['"](.*)['"]
 # version.filename = %(source.dir)s/main.py
-
+# 🔥 Add these lines near top
+android.ndk = 25b
+android.ndk_path = $(ANDROID_HOME)/ndk/25.2.9519653
+android.sdk_path = $(ANDROID_SDK_ROOT)
 requirements = python3,kivy,plyer,cryptography,requests,beautifulsoup4,pyjnius,android
 # buildozer.spec mein ye lines add karo
 android.accept_sdk_license = True

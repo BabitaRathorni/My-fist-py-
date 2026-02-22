@@ -16,7 +16,8 @@ requirements = python3,kivy,plyer,cryptography,requests,beautifulsoup4,pyjnius,a
 android.api = 33
 android.minapi = 21
 android.ndk = 25b
-android.sdk = 33
+# 🔥 FIXED: android.arch -> android.archs
+android.archs = arm64-v8a
 android.ndk_path = $(ANDROID_HOME)/ndk/25.2.9519653
 android.sdk_path = $(ANDROID_SDK_ROOT)
 android.gradle_dependencies = 'com.google.android.gms:play-services-location:21.0.1'
@@ -40,11 +41,8 @@ orientation = portrait
 # Fullscreen
 fullscreen = 0
 
-# Log level - ONLY ONE in app section
+# Log level
 log_level = 2
-
-# Architecture
-android.arch = arm64-v8a
 
 # Signing (debug only)
 android.debug = 1
@@ -62,6 +60,5 @@ window.size = 450x700
 android.recipes = sqlite3
 
 [buildozer]
-# 🔥 SIRF EK LOG_LEVEL YAHAN
 log_level = 2
 warn_on_root = 1

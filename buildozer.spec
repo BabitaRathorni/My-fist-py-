@@ -1,26 +1,42 @@
-[app]
-title = Babita Ultimate AI
-package.name = babitaultimate
-package.domain = org.babita
+name: Build Android APK
 
-source.dir = .
-source.include_exts = py,png,jpg,kv,ttf,txt
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
-version = 0.1
+jobs:
+  build:
+    runs-on: ubuntu-22.04
 
-requirements = python3,kivy
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-android.api = 33
-android.minapi = 21
-android.ndk = 25b
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-android.permissions = INTERNET
+      - name: Install System Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip wget ccache libncurses5 libstdc++6 python3-setuptools
 
-orientation = portrait
+      - name: Install Buildozer and Cython
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython==0.29.33 virtualenv
 
-android.archs = arm64-v8a
+      - name: Build with Buildozer
+        run: |
+          # Pehle licenses accept karenge aur phir seedha build
+          yes | buildozer -v android debug
+        env:
+          ACCEPT_SDK_LICENSE: "yes"
 
-android.debug = 1
-
-[buildozer]
-log_level = 2
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Babita-Ultimate-APK
+          path: bin/*.apk
